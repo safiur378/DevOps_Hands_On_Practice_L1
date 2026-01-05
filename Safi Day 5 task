@@ -1,0 +1,98 @@
++ # Day 05 - Handlers, User-Data, Resource Limites
++
++  ##  Ansible - Handler to Restart Nginx
++
++ ---
++ - name: Manage Nginx
++   Hosts: all
++   become: yes
++
++   tasks:
++     - name: Update config file
++       copy: 
++        src: index.html
++        dest: /usr/share/nginx/html/index.html
++      notify: Resstart Nginx
++
++   handlers:
++     - name: Restart-Nginx
++       service:
++         name: nginx
++         state: restarted
++   
++
++ ##   Terraform - EC2 with user Data (c6a.12*large)
++
++ resource "aws_instance" "PathnexEC2"
++   aml           = "ami-0abcd1234abcd1234"
++   instance_type = "c6a.12*large"
++ 
++   user_data = <<EOF
++ #1/bin/bash
++ yum install -y httpd
++ systemctl start httpd
++ EOF
++ 
++    tags =
++      Name = "Pathnex-EC2"
++     }
++   }
++ 
++
++ ##   Kubernetes - Resource Limits
++
++ apiVersion: v1
++ kind: pod
++ metadata:
++   name: pathnex-limited-pod
++ spec:
++   containers:
++     - name: app
++       image:  nginx
++       resources:
++         limits:
++           memory: "256Mi"
++           cpu: "500"
++
++
++ # Day 05 - Environment Variables
++
++ ##    Jekins Pipeline - Use Environment Variables
++ you will learn how to **use environment variables in jenkins piplines**.
++
++ pipeline {
++     agent any 
++     environment
++         INSTITUTE_NAME = "Pathnex"
++     }
++     stages {
++         stage('print') {
++            steps {
++                sh 'echo "Welcome to $INSTITUTE_NAME Devops Training"'
++             }
++          }
++          stage('Build') {
++             steps {
++                sh 'mvn clean package -Dinstitute.name=$INSTITUTE_NAME'
++              }
++           }
++        }
++    }
++
++ ##  Gitlab CI - use Environment Variables
++ you will learn how to **use CI variables in Gitlab pipelines**
++
++ stages:
++   - build
++
++ variables:
++   INSTITUTE_NAME: "pathnex"
++
++ build:
++   stage: build
++   image: maven:3.8.1-jdk-17
++   script:
++     - git clone https://github.com/pathnex/sample-java-app.git
++     - cd sample-java-app
++     - echo "Welcome to %INSTITUTE_NAME Devops Training"
++     - mvn clean package -Dinstittue.name-$INSTITUTE_NAME
