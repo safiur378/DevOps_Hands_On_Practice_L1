@@ -1,0 +1,54 @@
++ # Day 07 - SPEED TYPING
++
++ Rewrite ALL FOUR from Scratch:
++
++ 1. Ansible: Install nginx
++ 2. Terraform: EC2 (choose any Pathnex instance)
++ 3. kubernetes: Deployment 2 replicas
++ 4. Shell: print date + update
++ 
++ St a timer: **20 mintutes**
++
++
++ # Parameterized Builds
++
++ ##   jenkins pipeline - parameterized
++ you will learn how to **create parameterzied build in Jenkins**
++
++ pipeline {
++     agent any
++     parameters {
++         string(name: 'ENVIRONMENT' , defaultValue: 'dev', description: 'Deploment Environment')
++     }
++     environment {
++         INSTITUTE_NAME = "Pathnex'
++     }
++     stages {
++         stage('checkout') {
++             steps {
++                git url: 'https://github.com/pathnex/sample-java-app.git'
++             }
++           }
++           stage('Deploy') {
++               steps }
++                   sh 'echo "Deploying to $ENVIRONMENT by &INSTITUTE_NAME"'
++               }
++            }
++        }
++    }
++
++ ##   Gitlab CI - parameterized via Variables
++ you will learn how to **use  variables to parameterize Gitlab jobs**
++
++ stages:
++   - deploy
++
++ variables:
++   INSTITUTE_NAME: "Pathnex"
++   ENVIRONMENT: "dev"
++
++ deploy:
++   stage: deploy
++   image: alpine:latest
++   script:
++     - echo "Deploying to &ENVIORNMENT by &INSTITUTE_NAME'
